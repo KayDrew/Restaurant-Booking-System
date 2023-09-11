@@ -74,6 +74,27 @@ let bookedTables=await routes.getBookedTables();
     res.render('bookings', { tables :bookedTables})
 });
 
+app.post("/cancel",async (req,res)=>{
+
+    let tableName=req.body.table;
+    console.log(tableName)
+   await routes.cancelTableBooking(tableName);
+
+    res.redirect("/bookings");
+
+});
+
+app.get("/bookings/:username",async(req,res)=>{
+
+    let username=req.params.username;
+    let arr=[];
+let userBooking=await routes.getBookedTablesForUser(username);
+arr.push(userBooking);
+
+    res.render("bookings",{
+        tables:arr
+    })
+})
 
 
 

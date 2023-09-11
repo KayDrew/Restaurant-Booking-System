@@ -73,7 +73,7 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
         try{
 
            let result= await db.manyOrNone("SELECT * FROM table_booking WHERE booked=$1",true);
-        console.log(result);
+       
 
         return result;
         }catch(err){
@@ -88,10 +88,31 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
 
     async function cancelTableBooking(tableName) {
         // cancel a table by name
+   
+        try{
+
+            await db.none("UPDATE table_booking SET booked=$1,username=$2,number_of_people=$3,contact_number=$4 WHERE table_name=$5",[false,null,0,null,tableName])
+       console.log("cancelled")
+       
+        }catch(err){
+
+            console.log(err);
+        }
     }
 
     async function getBookedTablesForUser(username) {
         // get user table booking
+
+        try{
+
+            let result= await db.oneOrNone("SELECT * FROM table_booking WHERE username=$1",username);
+ 
+         return result;
+         }catch(err){
+ 
+             console.log(err)
+         }
+
     }
 
     async function editTableBooking(tableName) {
