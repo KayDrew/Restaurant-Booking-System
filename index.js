@@ -1,27 +1,47 @@
-import express from "express";
-import pgp from "pg-promise";
-import exphbs from "express-handlebars";
-import bodyParser from "body-parser";
-import flash from "flash-express";
+import 'dotenv/config';
+import express from 'express';
+import bodyParser from 'body-parser';
+import { engine } from 'express-handlebars';
+import flash from 'express-flash';
+import session from 'express-session';
+import pkg from 'pg-promise';
+import restaurant from './services/restaurant.js';
+
+
 
 const app = express()
 
 app.use(express.static('public'));
 app.use(flash());
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
-const handlebarSetup = exphbs.engine({
-    partialsDir: "./views/partials",
-    viewPath: './views',
-    layoutsDir: './views/layouts'
-});
-
-app.engine('handlebars', handlebarSetup);
+app.use(express.static('public'));
+app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
+app.set('views', './views');
+app.use(express.static('public'));
+app.use(express.static('images'))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.json());
+
+app.use(session({
+  secret: "no secret",
+  resave: false,
+  saveInitialized: false
+}));
+
+const connectionString=process.env.URL;
+const Pool= pkg();
+const db=Pool ({connectionString ,
+ssl: true 
+});
+const routes = restaurant(db);
+
+
+const route= restaurant();
 
 app.get("/", (req, res) => {
+
 
     res.render('index', { tables : [{}, {}, {booked : true}, {}, {}, {}]})
 });

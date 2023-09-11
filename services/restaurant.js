@@ -35,6 +35,10 @@ const restaurant = (db) => {
         // get user table booking
     }
 
+    async function editTableBooking(tableName) {
+        // get user table booking
+    }
+
     return {
         getTables,
         bookTable,
