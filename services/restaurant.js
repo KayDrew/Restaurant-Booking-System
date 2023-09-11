@@ -2,7 +2,7 @@ const restaurant = (db) => {
 
     let errorMeassage="";
     let success="";
-
+let userError="";
     async function getTables() {
         
    try{
@@ -17,11 +17,10 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
 
     async function bookTable(username,number_of_people,phoneNumber,id) {
 
+        //check if all parameters are valid
         if(id){
 
             if(number_of_people){
-
-            
 
                 if(username){
 
@@ -103,15 +102,22 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
     async function getBookedTablesForUser(username) {
         // get user table booking
 
-        try{
+        if(username){
 
+        try{
+//get booking for one user
             let result= await db.oneOrNone("SELECT * FROM table_booking WHERE username=$1",username);
- 
+ userError="";
          return result;
+
          }catch(err){
  
              console.log(err)
          }
+
+        }else{
+            userError="No booking found!";
+        }
 
     }
 
@@ -119,22 +125,29 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
         // get user table booking
     }
 
-
+//get error message
     function getError(){
 
         return errorMeassage;
     }
 
 
+    //get success message
     function getSuccess(){
 
         return success;
+    }
+
+    function getUserError(){
+
+        return userError;
     }
 
     return {
         getTables,
         bookTable,
         getBookedTables,
+        getUserError,
         isTableBooked,
         cancelTableBooking,
         editTableBooking,

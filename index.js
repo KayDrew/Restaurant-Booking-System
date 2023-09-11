@@ -42,9 +42,10 @@ app.get("/", async(req, res) => {
     //get all the tables
 let allTables=await routes.getTables();
 
-
+//show success message
 req.flash("success",routes.getSuccess());
 
+//show error message
 req.flash("error",routes.getError());
 
     res.render('index', { tables : allTables,
@@ -55,12 +56,15 @@ req.flash("error",routes.getError());
 
 app.post("/bookings",async (req,res)=>{
 
+    //get table id,username, booking size
     let id= await req.body.tableId;
     let username= await req.body.username;
     let number_of_people=await req.body.booking_size;
     let phoneNumber=req.body.phone_number;
 
-    await routes.bookTable(username,number_of_people,phoneNumber,id)
+    //record booking
+    await routes.bookTable(username,number_of_people,phoneNumber,id);
+
     res.redirect('/');
 
 })
@@ -69,6 +73,7 @@ app.post("/bookings",async (req,res)=>{
 
 app.get("/bookings",async (req, res) => {
 
+    //get booked tabes
 let bookedTables=await routes.getBookedTables();
 
     res.render('bookings', { tables :bookedTables})
@@ -76,8 +81,10 @@ let bookedTables=await routes.getBookedTables();
 
 app.post("/cancel",async (req,res)=>{
 
+    //get table name
     let tableName=req.body.table;
-    console.log(tableName)
+  
+    //cancel booking
    await routes.cancelTableBooking(tableName);
 
     res.redirect("/bookings");
@@ -86,10 +93,19 @@ app.post("/cancel",async (req,res)=>{
 
 app.get("/bookings/:username",async(req,res)=>{
 
+    //get username from url
     let username=req.params.username;
-    let arr=[];
+
+    //standardise result in array
+ let arr=[];
+
+ //get table for one user
 let userBooking=await routes.getBookedTablesForUser(username);
 arr.push(userBooking);
+
+
+//flash erroor
+req.flash("error1",routes.getUserError());
 
     res.render("bookings",{
         tables:arr
