@@ -39,10 +39,14 @@ const routes = restaurant(db);
 
 app.get("/", async(req, res) => {
 
+    //get all the tables
 let allTables=await routes.getTables();
+
     res.render('index', { tables : allTables})
 });
 
+
+//app.post("")
 
 app.get("/bookings", (req, res) => {
     res.render('bookings', { tables : [{}, {}, {}, {}, {}, {}]})

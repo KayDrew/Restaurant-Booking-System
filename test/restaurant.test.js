@@ -1,17 +1,18 @@
+import 'dotenv/config';
 import assert from "assert"
 import RestaurantTableBooking from "../services/restaurant.js";
 import pgPromise from 'pg-promise';
 
 const DATABASE_URL = '';
 
-const connectionString = process.env.DATABASE_URL || DATABASE_URL;
+const connectionString = process.env.URL || DATABASE_URL;
 const db = pgPromise()(connectionString);
 
 describe("The restaurant booking table", function () {
     beforeEach(async function () {
         try {
             // clean the tables before each test run
-            // await db.none("TRUNCATE TABLE table_booking RESTART IDENTITY CASCADE;");
+             //await db.none("TRUNCATE TABLE table_booking RESTART IDENTITY CASCADE;");
         } catch (err) {
             console.log(err);
             throw err;
@@ -19,9 +20,66 @@ describe("The restaurant booking table", function () {
     });
 
     it("Get all the available tables", async function () {
-        const restaurantTableBooking = await RestaurantTableBooking(db);
 
-        assert.deepEqual([{}, {}, {}, {}, {}], await restaurantTableBooking.getTables());
+        //get all the tables
+        const restaurantTableBooking = await RestaurantTableBooking(db).getTables();
+
+        
+        // all the  the tables
+        let tables=[
+            {
+              id: 1,
+              table_name: 'Table one',
+              capacity: 4,
+              booked: false,
+              username: null,
+              number_of_people: null,
+              contact_number: null
+            },  {
+                id: 2,
+                table_name: 'Table two',
+                capacity: 6,
+                booked: false,
+                username: null,
+                number_of_people: null,
+                contact_number: null
+              },  {
+                id: 3,
+                table_name: 'Table three',
+                capacity: 4,
+                booked: false,
+                username: null,
+                number_of_people: null,
+                contact_number: null
+              }, {
+                id: 4,
+                table_name: 'Table four',
+                capacity: 2,
+                booked: false,
+                username: null,
+                number_of_people: null,
+                contact_number: null
+              },  {
+                id: 5,
+                table_name: 'Table five',
+                capacity: 6,
+                booked: false,
+                username: null,
+                number_of_people: null,
+                contact_number: null
+              },  {
+                id: 6,
+                table_name: 'Table six',
+                capacity: 4,
+                booked: false,
+                username: null,
+                number_of_people: null,
+                contact_number: null
+              }
+            ];
+
+            //compare the number of items
+        assert.deepEqual(tables.length(),restaurantTableBooking.length());
     });
 
 
