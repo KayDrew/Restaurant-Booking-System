@@ -45,12 +45,25 @@ let allTables=await routes.getTables();
     res.render('index', { tables : allTables})
 });
 
+app.post("/bookings",async (req,res)=>{
+
+    let id= await req.body.tableId;
+    let username= await req.body.username;
+    let number_of_people=await req.body.booking_size;
+    let phoneNumber=req.body.phone_number;
+
+    await routes.bookTable(username,number_of_people,phoneNumber,id)
+    res.redirect('/');
+
+})
 
 //app.post("")
 
 app.get("/bookings", (req, res) => {
     res.render('bookings', { tables : [{}, {}, {}, {}, {}, {}]})
 });
+
+
 
 
 var portNumber = process.env.PORT || 3000;

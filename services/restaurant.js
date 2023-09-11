@@ -14,11 +14,13 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
    }
     }
 
-    async function bookTable(tableName,number_of_people,username,phoneNumber) {
+    async function bookTable(username,number_of_people,phoneNumber,id) {
 
-        if(tableName){
+        if(id){
 
             if(number_of_people){
+
+            
 
                 if(username){
 
@@ -26,7 +28,9 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
 
                         try{
 
-                           await db.none("UPDATE table_booking SET ");
+                           await db.none("UPDATE table_booking SET booked=$1,username=$2, number_of_people=$3,contact_number=$4 WHERE id=$5",[true,username,number_of_people,phoneNumber,id]);
+
+                           console.log("successfully inserted");
 
                         }
                         catch(err){
