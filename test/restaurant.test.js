@@ -24,62 +24,11 @@ describe("The restaurant booking table", function () {
         //get all the tables
         const restaurantTableBooking = await RestaurantTableBooking(db).getTables();
 
-        
-        // all the  the tables
-        let tables=[
-            {
-              id: 1,
-              table_name: 'Table one',
-              capacity: 4,
-              booked: false,
-              username: null,
-              number_of_people: null,
-              contact_number: null
-            },  {
-                id: 2,
-                table_name: 'Table two',
-                capacity: 6,
-                booked: false,
-                username: null,
-                number_of_people: null,
-                contact_number: null
-              },  {
-                id: 3,
-                table_name: 'Table three',
-                capacity: 4,
-                booked: false,
-                username: null,
-                number_of_people: null,
-                contact_number: null
-              }, {
-                id: 4,
-                table_name: 'Table four',
-                capacity: 2,
-                booked: false,
-                username: null,
-                number_of_people: null,
-                contact_number: null
-              },  {
-                id: 5,
-                table_name: 'Table five',
-                capacity: 6,
-                booked: false,
-                username: null,
-                number_of_people: null,
-                contact_number: null
-              },  {
-                id: 6,
-                table_name: 'Table six',
-                capacity: 4,
-                booked: false,
-                username: null,
-                number_of_people: null,
-                contact_number: null
-              }
-            ];
+
+               
 
             //compare the number of items
-        assert.deepEqual(tables.length(),restaurantTableBooking.length());
+        assert.deepEqual(6,restaurantTableBooking.length());
     });
 
 
@@ -107,28 +56,30 @@ describe("The restaurant booking table", function () {
     });
 
     it("Check if the booking has a user name provided.", async function () {
-        const restaurantTableBooking = await RestaurantTableBooking(db);
-        assert.deepEqual("Please enter a username", await restaurantTableBooking.bookTable({
-            tableName: 'Table eight',
+        const restaurantTableBooking =  RestaurantTableBooking(db);
+        await restaurantTableBooking.bookTable({
+            id:1,
             phoneNumber: '084 009 8910',
             seats: 2
-        }));
+        });
+        assert.deepEqual("Please enter a username", restaurantTableBooking.getError());
     });
 
     it("Check if the booking has a contact number provided.", async function () {
         const restaurantTableBooking = await RestaurantTableBooking(db);
-        assert.deepEqual("Please enter a contact number", await restaurantTableBooking.bookTable({
+        await restaurantTableBooking.bookTable({
             tableName: 'Table eight',
             username: 'Kim',
             seats: 2
-        }));
+        });
+        assert.deepEqual("Please enter a contact number",restaurantTableBooking.getError() );
     });
 
     it("should not be able to book a table with an invalid table name.", async function () {
         const restaurantTableBooking = await RestaurantTableBooking(db);
 
         await restaurantTableBooking.bookTable({
-            tableName: 'Table eight',
+            id: '2',
             username: 'Kim',
             phoneNumber: '084 009 8910',
             seats: 2

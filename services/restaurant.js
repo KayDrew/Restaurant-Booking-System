@@ -3,6 +3,7 @@ const restaurant = (db) => {
     let errorMeassage="";
     let success="";
 let userError="";
+let isBooked=false;
     async function getTables() {
         
    try{
@@ -32,6 +33,7 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
 
                            errorMeassage="";
                            success="Booking Successful!";
+                        
 
                         }
                         catch(err){
@@ -66,6 +68,8 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
         return errorMeassage;
     }
 
+
+
     async function getBookedTables() {
         // get all the booked tables
 
@@ -82,7 +86,17 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
     }
 
     async function isTableBooked(tableName) {
-        // get booked table by name
+        
+        try{
+
+           let result= await db.oneOrNone("SELECT * FROM table_name WHERE table_name=$1",tableName);
+            if(result.username){
+return true;
+            }
+
+        }catch(err){
+
+        }
     }
 
     async function cancelTableBooking(tableName) {
@@ -91,7 +105,7 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
         try{
 
             await db.none("UPDATE table_booking SET booked=$1,username=$2,number_of_people=$3,contact_number=$4 WHERE table_name=$5",[false,null,0,null,tableName])
-       console.log("cancelled")
+       
        
         }catch(err){
 
