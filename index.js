@@ -67,8 +67,11 @@ app.post("/bookings",async (req,res)=>{
 
 //app.post("")
 
-app.get("/bookings", (req, res) => {
-    res.render('bookings', { tables : [{}, {}, {}, {}, {}, {}]})
+app.get("/bookings",async (req, res) => {
+
+let bookedTables=await routes.getBookedTables();
+
+    res.render('bookings', { tables :bookedTables})
 });
 
 

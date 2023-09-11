@@ -69,6 +69,17 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
 
     async function getBookedTables() {
         // get all the booked tables
+
+        try{
+
+           let result= await db.manyOrNone("SELECT * FROM table_booking WHERE booked=$1",true);
+        console.log(result);
+
+        return result;
+        }catch(err){
+
+            console.log(err)
+        }
     }
 
     async function isTableBooked(tableName) {
