@@ -1,6 +1,7 @@
 const restaurant = (db) => {
 
     let errorMeassage="";
+    let success="";
 
     async function getTables() {
         
@@ -30,7 +31,8 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
 
                            await db.none("UPDATE table_booking SET booked=$1,username=$2, number_of_people=$3,contact_number=$4 WHERE id=$5",[true,username,number_of_people,phoneNumber,id]);
 
-                           console.log("successfully inserted");
+                           errorMeassage="";
+                           success="Booking Successful!";
 
                         }
                         catch(err){
@@ -40,21 +42,25 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
                     }else{
 
                         errorMeassage="Please enter a contact number";
+                        success="";
                     }
 
                 }else{
                     errorMeassage="Please enter a username";
+                    success="";
                 }
 
             }
 
             else{
 
-                errorMeassage="Please enter number of people"
+                errorMeassage="Please enter number of people";
+                success="";
             }
         }else{
 
-            errorMeassage="Please select table"
+            errorMeassage="Please select table";
+            success="";
         }
         
         console.log(errorMeassage);
@@ -81,6 +87,18 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
         // get user table booking
     }
 
+
+    function getError(){
+
+        return errorMeassage;
+    }
+
+
+    function getSuccess(){
+
+        return success;
+    }
+
     return {
         getTables,
         bookTable,
@@ -88,7 +106,9 @@ let result= await db.manyOrNone("SELECT * FROM table_booking");
         isTableBooked,
         cancelTableBooking,
         editTableBooking,
-        getBookedTablesForUser
+        getError,
+        getBookedTablesForUser,
+        getSuccess
     }
 }
 

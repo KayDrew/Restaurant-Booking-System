@@ -42,7 +42,15 @@ app.get("/", async(req, res) => {
     //get all the tables
 let allTables=await routes.getTables();
 
-    res.render('index', { tables : allTables})
+
+req.flash("success",routes.getSuccess());
+
+req.flash("error",routes.getError());
+
+    res.render('index', { tables : allTables,
+ 
+    
+})
 });
 
 app.post("/bookings",async (req,res)=>{
