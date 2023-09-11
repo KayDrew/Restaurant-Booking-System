@@ -37,13 +37,10 @@ ssl: true
 });
 const routes = restaurant(db);
 
+app.get("/", async(req, res) => {
 
-const route= restaurant();
-
-app.get("/", (req, res) => {
-
-
-    res.render('index', { tables : [{}, {}, {booked : true}, {}, {}, {}]})
+let allTables=await routes.getTables();
+    res.render('index', { tables : allTables})
 });
 
 
