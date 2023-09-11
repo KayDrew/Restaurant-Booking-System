@@ -1,7 +1,18 @@
 const restaurant = (db) => {
 
+
     async function getTables() {
-        // get all the available tables
+        
+        try{
+
+            await db.none("CREATE TABLE table_booking (id serial not null primary key,table_name text not null,capacity int not null,booked boolean not null,username text,number_of_people int,contact_number int)");
+           console.log('succefully created');
+           
+            
+        }catch(err){
+
+            console.log(err);
+        }
     }
 
     async function bookTable(tableName) {
